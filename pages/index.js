@@ -18,6 +18,7 @@ function HomePage() {
 				<Timeline playlists={config.playlists} >
 					Conteúdo
 				</Timeline>
+				<Aluratubes favorites={config.favorites} />
 			</div>
 		</>
 	);
@@ -94,5 +95,58 @@ function Timeline(props) {
 				]
 			})}
 		</StyledTimeline>
+	);
+}
+
+const StyledAluratubes = styled.div`
+	img {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		margin-bottom: 8px;
+		font-size: 14px;
+	}
+
+	a {
+		display: inline-grid;
+		text-align: center;
+		color: #000;
+		margin: 0 8px;
+	}
+
+	section {
+		padding: 0 32px;
+	}
+
+	h2 {
+		font-size: 16px;
+		margin-bottom: 16px;
+	}
+`;
+
+function Aluratubes(props) {
+	const favoritesNames = Object.keys(props.favorites);
+
+	return (
+		<StyledAluratubes>
+			{favoritesNames.map((favoritesName) => {
+				const favorites = props.favorites[favoritesName];
+				return [
+					<section className="aluratubes-info">
+						<h2>{favoritesName}</h2>
+						<div>
+							{favorites.map((favorite) => {
+								return (
+									<a href={`https://github.com/${favorite.github}`}>
+										<img src={`https://github.com/${favorite.github}.png`}/>
+										<span>@{favorite.github}</span>
+									</a>
+								)
+							})}
+						</div>
+					</section>
+				]
+			})}
+		</StyledAluratubes>
 	);
 }
