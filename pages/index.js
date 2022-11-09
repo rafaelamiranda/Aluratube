@@ -78,7 +78,6 @@ function Header() {
 }
 
 function Timeline({ searchValue, ...propriedades }) {
-	// console.log("Dentro do componente", propriedades.playlists);
 	const playlistNames = Object.keys(propriedades.playlists);
 	// Statement
 	// Retorno por expressão
@@ -86,8 +85,6 @@ function Timeline({ searchValue, ...propriedades }) {
 		<StyledTimeline>
 			{playlistNames.map((playlistName) => {
 				const videos = propriedades.playlists[playlistName];
-				// console.log(playlistName);
-				// console.log(videos);
 				return (
 					<section key={playlistName}>
 						<h2>{playlistName}</h2>
