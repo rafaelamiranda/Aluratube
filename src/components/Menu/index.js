@@ -30,7 +30,9 @@ export default function Menu({ valorDoFiltro, setValorDoFiltro }) {
   return (
     <StyledMenu>
       <div>
-        <Logo />
+        <a href="/">
+          <Logo />
+        </a>
       </div>
       <Search valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
       <DarkModeSwitch />

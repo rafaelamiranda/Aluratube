@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import config from "../config.json";
 import styled from "styled-components";
 import Menu from "../src/components/Menu";
@@ -28,15 +29,6 @@ function HomePage() {
 }
 
 export default HomePage
-
-// function Menu() {
-//     return (
-//         <div>
-//             Menu
-//         </div>
-//     )
-// }
-
 
 const StyledHeader = styled.div`
     background-color: ${({ theme }) => theme.backgroundLevel1};
@@ -97,12 +89,12 @@ function Timeline({ searchValue, ...propriedades }) {
 								})
 								.map((video) => {
 									return (
-										<a key={video.url} href={video.url}>
+										<Link href={`/video/${video["url"].split("v=")[1]}?title=${video.title}`} key={video.url}>
 											<img src={video.thumb} />
 											<span>
 												{video.title}
 											</span>
-										</a>
+										</Link>
 									)
 								})}
 						</div>
@@ -153,7 +145,7 @@ function Aluratubes(props) {
 							{favorites.map((favorite) => {
 								return (
 									<a key={favorite.github} href={`https://github.com/${favorite.github}`}>
-										<img src={`https://github.com/${favorite.github}.png`}/>
+										<img src={`https://github.com/${favorite.github}.png`} />
 										<span>@{favorite.github}</span>
 									</a>
 								)
