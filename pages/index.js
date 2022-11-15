@@ -4,9 +4,29 @@ import config from "../config.json";
 import styled from "styled-components";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
+import { createClient } from "@supabase/supabase-js";
+import { videoService } from "../src/services/videoService";
 
 function HomePage() {
+	const service = videoService();
 	const [valorDoFiltro, setValorDoFiltro] = React.useState("");
+	const [playlists, setPlaylists] = React.useState({});
+
+	React.useEffect(() => {
+		console.log("useEffect");
+		service.getAllVideos()
+			.then((dados) => {
+				// Forma imutavel
+				const novasPlaylists = { ...playlists };
+				dados.data.map((video) => {
+					if (!novasPlaylists[video.playlist]) {
+						novasPlaylists[video.playlist] = [];
+					}
+					novasPlaylists[video.playlist].push(video);
+				})
+				setPlaylists(novasPlaylists);
+			});
+	}, []);
 
 	return (
 		<>
@@ -14,12 +34,11 @@ function HomePage() {
 				display: "flex",
 				flexDirection: "column",
 				flex: 1,
-				// backgroundColor: "red",
 			}}>
 				{/* Prop Drilling */}
 				<Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
 				<Header />
-				<Timeline searchValue={valorDoFiltro} playlists={config.playlists}>
+				<Timeline searchValue={valorDoFiltro} playlists={playlists}>
 					Conteúdo
 				</Timeline>
 				<Aluratubes favorites={config.favorites} />
@@ -31,25 +50,25 @@ function HomePage() {
 export default HomePage
 
 const StyledHeader = styled.div`
-    background-color: ${({ theme }) => theme.backgroundLevel1};
-    img {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-    }
-    .user-info {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding: 16px 32px;
-        gap: 16px;
-    }
-`;
+	background-color: ${({ theme }) => theme.backgroundLevel1};
+	img {
+		width: 80px;
+		height: 80px;
+		border-radius: 50%;
+	}
+	.user-info {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		padding: 16px 32px;
+		gap: 16px;
+	}
+	`;
 const StyledBanner = styled.div`
 	background-image: url(${({ bg }) => bg});
 	background-size: cover;
 	height: 230px;
-`;
+	`;
 function Header() {
 	return (
 		<StyledHeader>
@@ -106,30 +125,30 @@ function Timeline({ searchValue, ...propriedades }) {
 }
 
 const StyledAluratubes = styled.div`
-	img {
-		width: 100px;
-		height: 100px;
-		border-radius: 50%;
-		margin-bottom: 8px;
-		font-size: 14px;
-	}
-	a {
-		display: inline-grid;
-		text-align: center;
-		color: #000;
-		margin: 0 8px;
-	}
-	section {
-		padding: 0 32px;
-	}
-	h2 {
-		font-size: 16px;
-		margin-bottom: 16px;
-	}
-	span {
-		color: ${({ theme }) => theme.textColorBase};
-	}
-`;
+						img {
+							width: 100px;
+							height: 100px;
+							border-radius: 50%;
+							margin-bottom: 8px;
+							font-size: 14px;
+						}
+						a {
+							display: inline-grid;
+							text-align: center;
+							color: #000;
+							margin: 0 8px;
+						}
+						section {
+							padding: 0 32px;
+						}
+						h2 {
+							font-size: 16px;
+							margin-bottom: 16px;
+						}
+						span {
+							color: ${({ theme }) => theme.textColorBase};
+						}
+						`;
 
 function Aluratubes(props) {
 	const favoritesNames = Object.keys(props.favorites);
