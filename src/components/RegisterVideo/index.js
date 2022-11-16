@@ -2,7 +2,6 @@ import React, { use } from "react";
 import { StyledRegisterVideo } from "./styles";
 import { createClient } from '@supabase/supabase-js'
 
-// get youtube thumbnail from video url
 function getThumbnail(url) {
 	return `https://img.youtube.com/vi/${url.split("v=")[1]}/0.jpg`;
 }
@@ -33,7 +32,7 @@ const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
 
 export default function RegisterVideo() {
 	const formCadastro = useForm({
-		initialValues: { titulo: "", url: "" }
+		initialValues: { titulo: "", url: "", categoria: "" }
 	});
 	const [formVisivel, setFormVisivel] = React.useState(false);
 
@@ -50,7 +49,7 @@ export default function RegisterVideo() {
 							title: formCadastro.values.titulo,
 							url: formCadastro.values.url,
 							thumb: getThumbnail(formCadastro.values.url),
-							playlist: "jogos",
+							playlist: formCadastro.values.categoria
 						})
 						.then((oqueveio) => {
 							console.log(oqueveio)
@@ -74,6 +73,12 @@ export default function RegisterVideo() {
 								placeholder="URL do vídeo"
 								name="url"
 								value={formCadastro.values.url}
+								onChange={formCadastro.handleChange}
+							/>
+							<input 
+								placeholder="Playlist do vídeo"
+								name="categoria"
+								value={formCadastro.values.categoria}
 								onChange={formCadastro.handleChange}
 							/>
 							<button type="submit">Cadastrar</button>
